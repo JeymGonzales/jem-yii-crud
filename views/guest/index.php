@@ -14,10 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Guest', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -31,8 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'lastname',
             'email:email',
             'number',
-            //'gender',
-            //'address',
+            'street',
+            'city',
+            'country',
+            'zip',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

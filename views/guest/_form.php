@@ -48,7 +48,13 @@ use yii\web\JqueryAsset;
 
             <?= $form->field($model, 'gender')->dropDownList(['Male' => 'Male', 'Female' => 'Female'],['prompt'=>'Select Option']); ?>
 
-            <?= $form->field($model, 'address')->textInput() ?>
+            <?= $form->field($model, 'street')->textInput() ?>
+
+            <?= $form->field($model, 'city')->textInput() ?>
+
+            <?= $form->field($model, 'country')->textInput() ?>
+
+            <?= $form->field($model, 'zip')->textInput() ?>
             
             
             <div class="form-group">

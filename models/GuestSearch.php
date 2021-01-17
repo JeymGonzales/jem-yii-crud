@@ -17,7 +17,7 @@ class GuestSearch extends Guest
     public function rules()
     {
         return [
-            [['id', 'address'], 'integer'],
+            [['id'], 'integer'],
             [['firstname', 'lastname', 'email', 'number', 'gender'], 'safe'],
         ];
     }
@@ -59,14 +59,17 @@ class GuestSearch extends Guest
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'address' => $this->address,
         ]);
 
         $query->andFilterWhere(['like', 'firstname', $this->firstname])
             ->andFilterWhere(['like', 'lastname', $this->lastname])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'number', $this->number])
-            ->andFilterWhere(['like', 'gender', $this->gender]);
+            ->andFilterWhere(['like', 'gender', $this->gender])
+            ->andFilterWhere(['like', 'street', $this->street])
+            ->andFilterWhere(['like', 'city', $this->city])
+            ->andFilterWhere(['like', 'country', $this->country])
+            ->andFilterWhere(['like', 'zip', $this->zip]);
 
         return $dataProvider;
     }
