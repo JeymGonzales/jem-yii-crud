@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Event;
-use app\models\GuestsEvents;
+use app\models\GuestEvent;
 
 /**
  * GuestController implements the CRUD actions for Guest model.
@@ -71,20 +71,26 @@ class GuestController extends Controller
         $events = Event::find()->all();
         $guestEvents = new \app\models\GuestEvent;
         $request = Yii::$app->request->post();
+        $userEvents = [];
 
         if ($model->load($request) && $guestEvents->load($request)) {
 
             $model->save();
             $this->guestEventCreate($model->id, $request['events_id']);
-            
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            return json_encode([
+                'data' => 'success',
+                'status' => 200
+            ]);
+
         }
+        
         
         return $this->render('create', [
             'model' => $model,
             'events' => $events,
-            'guestEvents' => $guestEvents
+            'guestEvents' => $guestEvents,
+            'userEvents' => $userEvents
         ]);
     }
     /**
@@ -97,13 +103,35 @@ class GuestController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $guestEvents = new \app\models\GuestEvent;
+        $request = Yii::$app->request->post();
+        $events = Event::find()->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $attendedEvents = GuestEvent::find()->where(['guests_id' => $model->id])
+            ->asArray()->all();
+        
+        $userEvents = [];
+
+        if(count($attendedEvents)) 
+        {
+            foreach($attendedEvents as $key => $value)
+            {
+                $userEvents[] = $value['events_id'];
+            }
+        }
+
+        if ($model->load($request) && $guestEvents->load($request)) 
+        {
+            $this->guestEventUpdate($model->id, $request['events_id'], $userEvents);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+
         return $this->render('update', [
             'model' => $model,
+            'events' => $events,
+            'guestEvents' => $guestEvents,
+            'userEvents' => $userEvents
         ]);
     }
 
@@ -139,10 +167,53 @@ class GuestController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+
+
+    /**
+     * 
+     * Creates record for user attending events
+     * @param integer $id
+     * @param array $events
+     * @return void
+     *
+     */
+
     private function guestEventCreate($id, $events) : void
     {  
-
         foreach($events as $eventId) {
+            $guestEvent = new \app\models\GuestEvent;
+            $guestEvent->guests_id = $id;
+            $guestEvent->events_id = $eventId;
+            $guestEvent->save();
+        }
+    }
+
+    /**
+     * 
+     * Create not existing user event attending events / Delete deselected events
+     * @param integer $id
+     * @param array $events
+     * @param array $userEvents
+     * @return void
+     *
+     */
+
+    private function guestEventUpdate($id, $events, $userEvents) : void 
+    {
+        if(!empty($userEvents)) 
+        {
+            foreach($userEvents as $userEvent) 
+            {
+                GuestEvent::find()
+                ->where(['guests_id'=> $id])
+                ->andwhere(['events_id'=> $userEvent])
+                ->one()
+                ->delete();
+            }
+        }
+
+        foreach($events as $eventId) 
+        {
             $guestEvent = new \app\models\GuestEvent;
             $guestEvent->guests_id = $id;
             $guestEvent->events_id = $eventId;

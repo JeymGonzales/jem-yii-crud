@@ -1,5 +1,4 @@
 <?php
-
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -48,6 +47,17 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/admin/guests' => 'guest/index',
+                '/admin/guests/view' => '/guest/view',
+                '/admin/guests/update' => '/guest/update',
+                '/admin/guests/delete' => '/guest/delete',
+                '/admin/guests/create' => '/',
+                '/admin/events' => 'event/index',
+                '/admin/events/create' => 'event/create',
+                '/admin/events/view' => 'event/view',
+                '/admin/events/update' => 'event/update',
+                '/admin/events/delete' => 'event/delete'
+
             ],
         ]
     ],

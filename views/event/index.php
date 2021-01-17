@@ -29,8 +29,24 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'location',
             'date',
+            'status',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn', 'template'=>'{view} {update} {delete} {show}',
+
+            'buttons'=>[
+
+              'show' => function ($url, $model) {
+                    $label = 'Inactive';
+                    if($model->status == 1) {
+                        $label = 'Active';
+                    }
+
+                    return Html::a($label, $url, [
+                        'title' => Yii::t('yii', 'Show/Hide Event'),
+                    ]);                                
+                }
+            ],
+        ],
         ],
     ]); ?>
 
@@ -38,3 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+<script>
+    
+</script>

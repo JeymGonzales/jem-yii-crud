@@ -19,9 +19,8 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model,'date')->widget(DateTimePicker::className(),[
         'options' => ['placeholder' => 'Select event date and time ...'],
-        'convertFormat' => true,
         'pluginOptions' => [
-            'format' => 'yyyy-mm-dd h:i:s',
+            'format' => 'yyyy-mm-dd hh:ii:ss'
         ]
         ]) ?>
 

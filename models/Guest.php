@@ -31,9 +31,11 @@ class Guest extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['address', 'firstname', 'lastname', 'email', 'number', 'gender'], 'required'],
+            [['address', 'firstname', 'lastname', 'email', 'gender'], 'required'],
             [['firstname', 'lastname', 'email'], 'string', 'max' => 120,],
-            [['number', 'gender'], 'string', 'max' => 50],
+            [['number'], 'number'],
+            [['email'], 'email'],
+            [['email'],'unique','message'=>'Email already exist. Please try another one.'],
         ];
     }
 

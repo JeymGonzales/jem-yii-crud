@@ -29,6 +29,7 @@ class Event extends \yii\db\ActiveRecord
     {
         return [
             [['date'], 'safe'],
+            [['name', 'location','date'], 'required'],
             [['name', 'location'], 'string', 'max' => 120],
         ];
     }

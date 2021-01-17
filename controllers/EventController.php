@@ -138,9 +138,32 @@ class EventController extends Controller
         ]);
     }
 
+    public function actionShow($id) {
+        $event = Event::findOne($id);
+        if($event->status == 1) {
+            $event->status = 0;
+        } else {
+            $event->status = 1;
+            
+        }
+        $event->save();
+
+        $searchModel = new EventSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $this->redirect('/event/index');
+
+    }
 
 
-    public function actionExport($id) {
+    /**
+     * 
+     * Downloads registrants from event $id
+     * @param integer $id
+     * @return void
+     *
+     */
+    public function actionExport($id) : void {
 
         $event = $this->findModel($id);
 
