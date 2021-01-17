@@ -56,7 +56,8 @@ $config = [
                 '/admin/events/create' => 'event/create',
                 '/admin/events/view' => 'event/view',
                 '/admin/events/update' => 'event/update',
-                '/admin/events/delete' => 'event/delete'
+                '/admin/events/delete' => 'event/delete',
+                '/admin/events/export' => 'event/export'
 
             ],
         ]
